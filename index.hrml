@@ -5,22 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>체감온도 계산기</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        input { margin: 5px; padding: 10px; width: 100px; }
-        button { padding: 10px 20px; cursor: pointer; }
-        #result { font-size: 20px; margin-top: 10px; font-weight: bold; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #result {
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
 
-    <h2>체감온도 계산기</h2>
-    <p>온도(℃)와 풍속(km/h)을 입력하세요</p>
-
-    <input type="number" id="temperature" placeholder="온도 (℃)">
-    <input type="number" id="windSpeed" placeholder="풍속 (km/h)">
-    <button onclick="calculateWindChill()">계산하기</button>
-
-    <p id="result"></p>
+    <div class="container">
+        <h2>체감온도 계산기 🌡️</h2>
+        <input type="number" id="temperature" placeholder="온도 (℃)">
+        <input type="number" id="windSpeed" placeholder="풍속 (km/h)">
+        <button onclick="calculateWindChill()">계산하기</button>
+        <p id="result"></p>
+    </div>
 
     <script>
         function calculateWindChill() {
@@ -28,7 +72,7 @@
             let V = parseFloat(document.getElementById("windSpeed").value);
             
             if (isNaN(T) || isNaN(V) || V < 0) {
-                document.getElementById("result").innerText = "올바른 값을 입력하세요.";
+                document.getElementById("result").innerText = "⚠️ 올바른 값을 입력하세요.";
                 return;
             }
 
