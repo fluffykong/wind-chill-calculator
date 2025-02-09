@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ffe57f, #ff6f61);
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,7 +20,7 @@
             border-radius: 12px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 300px;
+            width: 320px;
         }
         h2 {
             color: #333;
@@ -35,7 +35,7 @@
             text-align: center;
         }
         button {
-            background: #ff6f61;
+            background: #e74c3c;
             color: white;
             border: none;
             padding: 12px;
@@ -46,13 +46,13 @@
             transition: 0.3s;
         }
         button:hover {
-            background: #e53935;
+            background: #c0392b;
         }
         #result {
             margin-top: 15px;
             font-size: 20px;
             font-weight: bold;
-            color: #ff6f61;
+            color: #e74c3c;
         }
     </style>
 </head>
@@ -60,26 +60,33 @@
 
     <div class="container">
         <h2>여름철 체감온도 계산기 🌞</h2>
-        <input type="number" id="temperature" placeholder="기온 (℃)">
+        <input type="number" id="temperature" placeholder="기온 (°C)">
         <input type="number" id="humidity" placeholder="습도 (%)">
-        <button onclick="calculateSummerHeatIndex()">계산하기</button>
+        <button onclick="calculateHeatIndex()">계산하기</button>
         <p id="result"></p>
     </div>
 
     <script>
-        function calculateSummerHeatIndex() {
-            let T = parseFloat(document.getElementById("temperature").value);
-            let RH = parseFloat(document.getElementById("humidity").value);
-            
-            if (isNaN(T) || isNaN(RH) || RH < 0 || RH > 100) {
+        function calculateHeatIndex() {
+            let Ta = parseFloat(document.getElementById("temperature").value);  // 기온 (°C)
+            let RH = parseFloat(document.getElementById("humidity").value);  // 습도 (%)
+
+            if (isNaN(Ta) || isNaN(RH) || RH < 0 || RH > 100) {
                 document.getElementById("result").innerText = "⚠️ 올바른 값을 입력하세요.";
                 return;
             }
 
-            // 여름철 체감온도 계산 (기상청 간략 공식)
-            let HI = T + 0.5555 * (6.11 * Math.exp(5417.7530 * ((1 / 273.16) - (1 / (T + 273.15)))) - 10);
+            // Tw (습구온도) 계산 - Stull의 추정식
+            let Tw = Ta * Math.atan(0.151977 * Math.sqrt(RH + 8.313659)) 
+                   + Math.atan(Ta + RH) 
+                   - Math.atan(RH - 1.67633) 
+                   + 0.00391838 * Math.pow(RH, 1.5) * Math.atan(0.023101 * RH) 
+                   - 4.686035;
 
-            document.getElementById("result").innerText = `체감온도: ${HI.toFixed(1)} ℃`;
+            // 체감온도 계산
+            let HI = -0.2442 + 0.55399 * Tw + 0.45535 * Ta - 0.0022 * Math.pow(Tw, 2) + 0.00278 * Tw * Ta + 3.0;
+
+            document.getElementById("result").innerText = `여름철 체감온도: ${HI.toFixed(1)} ℃`;
         }
     </script>
 
